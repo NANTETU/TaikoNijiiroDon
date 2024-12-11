@@ -1,0 +1,93 @@
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
+
+namespace TaikoSimulator
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            // ウィンドウ設定
+            this.Title = "Taiko Simulator";
+            this.Width = 800;
+            this.Height = 600;
+
+            // 背景画像
+            ImageBrush bg = new ImageBrush();
+            bg.ImageSource = new BitmapImage(new Uri("path_to_your_background_image.png", UriKind.Relative));
+            this.Background = bg;
+
+            // ボタン（1人プレイ）
+            Button button1 = new Button
+            {
+                Content = CreateFadingText("1人プレイ\n太鼓をたたいてスタート！"),
+                Width = 300,
+                Height = 100,
+                FontSize = 20,
+                Margin = new Thickness(0, 200, 0, 0)
+            };
+            button1.Click += (s, e) => MessageBox.Show("1人プレイが選択されました！");
+
+            // ボタン（2人プレイ）
+            Button button2 = new Button
+            {
+                Content = "2人プレイ\nあと1コイン",
+                Width = 300,
+                Height = 100,
+                FontSize = 20,
+                Margin = new Thickness(0, 320, 0, 0)
+            };
+            button2.Click += (s, e) => MessageBox.Show("2人プレイが選択されました！");
+
+            // スタックパネルでボタン配置
+            StackPanel panel = new StackPanel
+            {
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+            panel.Children.Add(button1);
+            panel.Children.Add(button2);
+
+            // メインにセット
+            this.Content = panel;
+        }
+
+        // テキストをフェードさせる処理
+        private TextBlock CreateFadingText(string text)
+        {
+            // テキストブロック作成
+            TextBlock textBlock = new TextBlock
+            {
+                Text = text,
+                TextAlignment = TextAlignment.Center,
+                Foreground = Brushes.Black,
+                FontSize = 20,
+                Opacity = 1.0
+            };
+
+            // フェードアニメーション
+            DoubleAnimation fadeAnimation = new DoubleAnimation
+            {
+                From = 1.0,
+                To = 0.3,
+                Duration = TimeSpan.FromSeconds(1),
+                AutoReverse = true,
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+
+            // アニメーションを適用
+            Storyboard storyboard = new Storyboard();
+            storyboard.Children.Add(fadeAnimation);
+            Storyboard.SetTarget(fadeAnimation, textBlock);
+            Storyboard.SetTargetProperty(fadeAnimation, new PropertyPath(TextBlock.OpacityProperty));
+            storyboard.Begin();
+
+            return textBlock;
+        }
+    }
+}
