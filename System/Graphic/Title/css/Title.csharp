@@ -15,8 +15,8 @@ namespace TaikoSimulator
 
             // ウィンドウ設定
             this.Title = "Taiko Simulator";
-            this.Width = 800;
-            this.Height = 600;
+            this.Width = 1920;
+            this.Height = 1080;
 
             // 背景画像
             ImageBrush bg = new ImageBrush();
